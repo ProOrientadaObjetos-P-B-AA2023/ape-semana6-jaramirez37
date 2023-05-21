@@ -1,5 +1,6 @@
 package taller6;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -48,7 +49,7 @@ class Estudiante {
     @Override
     public String toString() {
         return String.format("-----ESTUDIANTE-----"
-                +"\nNombre: %s"
+                + "\nNombre: %s"
                 + "\nEdad: %d",
                 this.nombreEstudiante,
                 this.edad);
@@ -164,24 +165,51 @@ class Materia {
 public class Taller6 {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner entrada = new Scanner(System.in);
+        Random random = new Random();
 
-        Materia materia1 = new Materia("Programacion Orientada a Objetos", 3.5, 3, 3.5);
-        Materia materia2 = new Materia("Estructura de Datos", 3.5, 0, 3);
-        Materia materia3 = new Materia("Base de Datos", 3.5, 0, 0);
-        Materia materias[] = {materia1, materia2, materia3};
-        System.out.println("Ingresa tu nombre, edad y materia: ");
-        Estudiante est1 = new Estudiante(sc.nextLine(), sc.nextInt(), materias);
-        System.out.println(est1);
-        for (Materia materiaAux : materias) {
-            materiaAux.CalcularNotaTotal();
-            materiaAux.CalcularEstado();
-            materiaAux.setRecuperacion(materiaAux.getEstado().equals("Reprobado") ? 3 : 0);
-            if (materiaAux.getEstado().equals("Reprobado")) {
-                materiaAux.CalcularRecuperacion();
-                materiaAux.CalcularEstado();
+        Materia materia[] = new Materia[100];
+        Estudiante estudiante = new Estudiante();
+
+        boolean in = true;
+        int i = 0;
+        while (in) {
+            System.out.println("Agregar Materia     [1]");
+            System.out.println("Mostrar informacion [2]");
+            System.out.println("Salir               [0]");
+            int opc = entrada.nextInt();
+
+            switch (opc) {
+                case 1 -> {
+                    double num1 = random.nextDouble(0, 3.5);
+                    double num2 = random.nextDouble(0, 3.5);
+                    double num3 = random.nextDouble(0, 3);
+                    System.out.println("INGRESE: MATERIA");
+                    materia[i] = new Materia(entrada.nextLine(), num1, num2, num3);
+                    estudiante = new Estudiante("Joseph ", 20, materia);
+                    i++;
+                }
+                case 2 -> {
+                    for (int j = 0; j < i; j++) {
+                        System.out.println(estudiante);
+                        materia[j].CalcularNotaTotal();
+                        materia[j].CalcularEstado();
+                        double recuperacion = random.nextDouble(0, 3.5);
+                        materia[j].setRecuperacion(materia[j].getEstado().equals("REPROBADO") ? recuperacion : 0);
+                        if (materia[j].getEstado().equals("REPROBADO")) {
+                            materia[j].CalcularRecuperacion();
+                        }
+                        materia[j].CalcularEstado();
+                        System.out.println(materia[j]);
+
+                    }
+                    System.out.println("\n");
+                }
+                case 0 ->
+                    in = false;
+                default -> {
+                }
             }
-            System.out.println(materiaAux);
         }
     }
 }
